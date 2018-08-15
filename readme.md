@@ -44,6 +44,11 @@ az aks create `
 ```
 _Note: backticks (`) are for legibility and I'm assuming you're using PowerShell. Use backslashes instead on Linux._
 
+The `http_application_routing` add-on installs an ingress controller that enables `Ingress` resources to work with AKS. To get the public IP (EXTERNAL-IP), use the following command:
+```
+kubectl get service addon-http-application-routing-nginx-ingress -n kube-system
+```
+
 ### Install `kubectl`
 `kubectl` is Kubernetes' CLI tool that allows you to interact with your cluster.
 ```
@@ -80,4 +85,11 @@ This will also create a `namespace` that will contain all of the voting app reso
 ```
 kubectl create namespace voting-app
 kubectl apply -f .\example-voting-app\ -n voting-app
+kubectl get services -n voting-app
 ```
+
+Take the EXTERNAL-IP values from the `vote` and `result` services and access the apps via the following URIs:
+
+vote: http://{vote-EXTERNAL-IP}:5000
+
+result: http://{result-EXTERNAL-IP}:5001
