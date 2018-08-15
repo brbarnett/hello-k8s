@@ -131,7 +131,7 @@ git clone https://github.com/istio/istio
 cd istio
 ```
 
-Istio comes with a good number of CustomRoleDefinition resources, or CRDs. Before installing Istio via Helm, load these CRDs manually (future version of Helm will allow CRD+Chart installations)
+Istio comes with a good number of `CustomRoleDefinition` resources, or CRDs. Before installing Istio via Helm, load these CRDs manually (future version of Helm will allow CRD + Chart installations)
 ```
 kubectl apply -f install/kubernetes/helm/istio/templates/crds.yaml
 ```
@@ -148,5 +148,7 @@ helm install install/kubernetes/helm/istio `
     --set servicegraph.enabled=true `
     --set tracing.enabled=true `
     --timeout 600
+
+kubectl get pods -n istio-system
 ```
 _Note: see all possible custom values here: [https://github.com/istio/istio/tree/master/install/kubernetes/helm/istio#configuration](https://github.com/istio/istio/tree/master/install/kubernetes/helm/istio#configuration)
