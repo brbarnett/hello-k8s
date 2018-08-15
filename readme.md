@@ -8,8 +8,7 @@ You'll need the latest Azure CLI. Download here: [https://docs.microsoft.com/en-
 `az login` will return a list of subscription IDs
 ```
 az login
-az account set --subscription
-00000000-0000-0000-0000-000000000000
+az account set --subscription 00000000-0000-0000-0000-000000000000
 ```
 
 ### Create primary resource group
@@ -43,7 +42,8 @@ az aks create `
     --enable-addons http_application_routing `
     --no-wait
 ```
-	
+_Note: backticks (`) are for legibility and I'm assuming you're using PowerShell. Use backslashes instead on Linux._
+
 ### Install `kubectl`
 `kubectl` is Kubernetes' CLI tool that allows you to interact with your cluster.
 ```
@@ -51,7 +51,7 @@ az aks install-cli --client-version latest
 ```
 
 ### Get cluster credentials
-This will merge credentials into your local `kubectl` context.
+This will merge credentials into your local `kubectl` context. The `-a` flag is for admin login.
 ```
 az aks get-credentials -g Kubernetes -n rp-aks-centralus -a
 ```
