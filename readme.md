@@ -70,3 +70,15 @@ kubectl delete service kubernetes-dashboard -n kube-system
 kubectl delete secret kubernetes-dashboard-key-holder -n kube-system
 kubectl delete secret kubernetes-dashboard-token-8bv4h -n kube-system
 ```
+
+## Install the example-voting-app Docker sample
+The voting app is the cannonical Docker and Docker-Compose example. 
+
+Source: [https://github.com/dockersamples/example-voting-app](https://github.com/dockersamples/example-voting-app)
+
+### Install Kubernetes resources with `kubectl`
+This will also create a `namespace` that will contain all of the voting app resources. Namespaces are isolated (e.g., RBAC, DNS) and can be deleted as a single unit. In this way, they are analogous to Azure Resource Groups.
+```
+kubectl create namespace voting-app
+kubectl apply -f .\example-voting-app\ -n voting-app
+```
