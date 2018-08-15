@@ -68,7 +68,6 @@ Its access level is considered an attack vector. It is unlikely to be deployed b
 kubectl delete deployment kubernetes-dashboard -n kube-system
 kubectl delete service kubernetes-dashboard -n kube-system
 kubectl delete secret kubernetes-dashboard-key-holder -n kube-system
-kubectl delete secret kubernetes-dashboard-token-8bv4h -n kube-system
 ```
 
 ## Install the example-voting-app Docker sample
