@@ -93,3 +93,60 @@ Take the EXTERNAL-IP values from the `vote` and `result` services and access the
 vote: http://{vote-EXTERNAL-IP}:5000
 
 result: http://{result-EXTERNAL-IP}:5001
+
+## Advanced concepts
+
+### Helm
+[Helm](https://helm.sh/) is a Kubernetes package manager that installs bundles of Kubernetes resources called Charts. 
+
+Helm consists of a client CLI on the operator's machine that sends command to an agent pod (called `Tiller`) on a Kubernetes cluster. When RBAC is enabled, `Tiller` needs a service account to have enough privileges to manage resources.
+
+Start by creating a service account
+```
+kubectl apply -f .\setup\helm-service-account.yaml
+```
+
+Now initialize Helm on your cluster
+```
+helm init --service-account tiller
+helm version
+```
+_Note: in a production cluster, you should be using specific RBAC Roles and RoleBindings to specify Tiller's access to the cluster. See Helm's documentation on how to secure your installation: [https://docs.helm.sh/using_helm/#securing-your-helm-installation](https://docs.helm.sh/using_helm/#securing-your-helm-installation)_
+
+### Istio
+[Istio](https://istio.io) is an implementation of a service mesh. It automatically injects Envoy proxies as sidecars into application pods that provide capabilities such as:
+
+1. Client-side service discovery and DNS
+2. Network policies
+3. Telemetry collection
+4. Advanced load balancing (e.g., canary releases)
+5. Fault injection (i.e., chaos testing)
+6. Implements timeout, circuit breaker, retry
+
+This is based on Istio's installation documentation: [https://istio.io/docs/setup/kubernetes/helm-install/](https://istio.io/docs/setup/kubernetes/helm-install/)
+
+Start by cloning the Istio project
+```
+git clone https://github.com/istio/istio
+cd istio
+```
+
+Istio comes with a good number of CustomRoleDefinition resources, or CRDs. Before installing Istio via Helm, load these CRDs manually (future version of Helm will allow CRD+Chart installations)
+```
+kubectl apply -f install/kubernetes/helm/istio/templates/crds.yaml
+```
+
+Now install Istio with some custom values
+```
+helm install install/kubernetes/helm/istio `
+    --name istio `
+    --namespace istio-system `
+    --set global.controlPlaneSecurityEnabled=true `
+    --set global.mtls.enabled=true `
+    --set grafana.enabled=true `
+    --set grafana.persist=true `
+    --set servicegraph.enabled=true `
+    --set tracing.enabled=true `
+    --timeout 600
+```
+_Note: see all possible custom values here: [https://github.com/istio/istio/tree/master/install/kubernetes/helm/istio#configuration](https://github.com/istio/istio/tree/master/install/kubernetes/helm/istio#configuration)
