@@ -7,13 +7,14 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - http:
+  - host: 7e8ecf8e679e4de789c1.centralus.aksapp.io
+    http:
       paths:
-      - path: /api-a
+      - path: /apiA
         backend:
           serviceName: api-a
           servicePort: 80
-      - path: /api-b
+      - path: /apiB
         backend:
           serviceName: api-b
           servicePort: 80
