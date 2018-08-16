@@ -1,0 +1,14 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: api-a
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: api-a
+    spec:
+      containers:
+      - image: brbarnett/my-name-is:latest
+        name: api-a

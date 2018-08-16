@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: api-ingress
+  annotations:
+    kubernetes.io/ingress.class: addon-http-application-routing
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /api-a
+        backend:
+          serviceName: api-a
+          servicePort: 80
+      - path: /api-b
+        backend:
+          serviceName: api-b
+          servicePort: 80
