@@ -90,9 +90,24 @@ kubectl get services -n voting-app
 
 Take the EXTERNAL-IP values from the `vote` and `result` services and access the apps via the following URIs:
 
-vote: http://{vote-EXTERNAL-IP}:5000
+- vote: http://{vote-EXTERNAL-IP}:5000
+- result: http://{result-EXTERNAL-IP}:5001
 
-result: http://{result-EXTERNAL-IP}:5001
+## Working with `Ingress` resources
+The Kubernetes `Ingress` resource is a configuration file that manages reverse proxy rules for inbound cluster traffic. This allows you to surface multiple services as if they were a combined API.
+
+In the Azure portal, open the IP address associated to the IP found above. In the Configuration blade, add a DNS name. In our case, I have changed it to rp-aks-centralus.centralus.cloudapp.azure.com
+
+Now, create some resources and an `Ingress` definition:
+```
+kubectl create namespace api-ingress
+kubectl apply -f .\example-ingress\kubernetes\ -n api-ingress
+```
+
+Access the two services, balanced between their deployed pods, with these URIs:
+
+- [https://rp-aks-centralus.centralus.cloudapp.azure.com/api-a](https://rp-aks-centralus.centralus.cloudapp.azure.com/api-a)
+- [https://rp-aks-centralus.centralus.cloudapp.azure.com/api-b](https://rp-aks-centralus.centralus.cloudapp.azure.com/api-b)
 
 ## Advanced concepts
 
