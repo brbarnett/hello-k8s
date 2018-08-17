@@ -102,7 +102,7 @@ az network public-ip create `
 
 Remember -- Ingress is simply a configuration file. It still requires an ingress controller to serve as its reverse proxy. Kubernetes has provided a Helm chart as an implementation of an ingress controller.
 
-_Note: Please install Helm prior to running this command_
+_Note: Please [install Helm](#helm) prior to running this command_
 ```
 kubectl create namespace api-ingress
 
