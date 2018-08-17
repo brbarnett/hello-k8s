@@ -122,7 +122,8 @@ In final preperation, we will set up TLS termination via LetsEncrypt
 helm install stable/cert-manager `
     --name cert-manager `
     --namespace kube-system `
-    --set ingressShim.extraArgs='{--default-issuer-name=letsencrypt-prod,--default-issuer-kind=Issuer}'
+    --set ingressShim.defaultIssuerName=letsencrypt-prod `
+    --set ingressShim.defaultIssuerKind=Issuer
 
 kubectl apply -f .\setup\cert-issuer-prod.yaml -n api-ingress
 ```
