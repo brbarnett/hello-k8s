@@ -135,8 +135,8 @@ kubectl apply -f .\example-ingress\kubernetes\ -n api-ingress
 
 Access the two services, balanced between their deployed pods, with these URIs:
 
-- [http://rp-aks-centralus-api-ingress.centralus.cloudapp.azure.com/api-a](http://rp-aks-centralus-api-ingress.centralus.cloudapp.azure.com/api-a)
-- [http://rp-aks-centralus-api-ingress.centralus.cloudapp.azure.com/api-b](http://rp-aks-centralus-api-ingress.centralus.cloudapp.azure.com/api-b)
+- [https://rp-aks-centralus-api-ingress.centralus.cloudapp.azure.com/api-a](http://rp-aks-centralus-api-ingress.centralus.cloudapp.azure.com/api-a)
+- [https://rp-aks-centralus-api-ingress.centralus.cloudapp.azure.com/api-b](http://rp-aks-centralus-api-ingress.centralus.cloudapp.azure.com/api-b)
 
 ## Advanced concepts
 
