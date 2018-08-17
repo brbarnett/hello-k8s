@@ -39,15 +39,9 @@ az aks create `
     --aad-tenant-id 00000000-0000-0000-0000-000000000000 `
     --enable-rbac `
     --kubernetes-version 1.11.1 `
-    --enable-addons http_application_routing `
     --no-wait
 ```
 _Note: backticks (`) are for legibility and I'm assuming you're using PowerShell. Use backslashes instead on Linux._
-
-The `http_application_routing` add-on installs an ingress controller that enables `Ingress` resources to work with AKS. To get the public IP (EXTERNAL-IP), use the following command:
-```
-kubectl get service addon-http-application-routing-nginx-ingress -n kube-system
-```
 
 ### Install `kubectl`
 `kubectl` is Kubernetes' CLI tool that allows you to interact with your cluster.
@@ -96,18 +90,52 @@ Take the EXTERNAL-IP values from the `vote` and `result` services and access the
 ## Working with `Ingress` resources
 The Kubernetes `Ingress` resource is a configuration file that manages reverse proxy rules for inbound cluster traffic. This allows you to surface multiple services as if they were a combined API.
 
-In the Azure portal, open the IP address associated to the IP found above. In the Configuration blade, add a DNS name. In our case, I have changed it to rp-aks-centralus.centralus.cloudapp.azure.com
+Ingress requires a public, static IP. Start by provisioning one:
+```
+az network public-ip create `
+    -g MC_kubernetes_rp-aks-centralus_centralus `
+    -n rp-aks-centralus-api-ingress-ip `
+    -l centralus `
+    --allocation-method static `
+    --dns-name rp-aks-centralus-api-ingress    
+```
+
+Remember -- Ingress is simply a configuration file. It still requires an ingress controller to serve as its reverse proxy. Kubernetes has provided a Helm chart as an implementation of an ingress controller.
+
+_Note: Please install Helm prior to running this command_
+```
+kubectl create namespace api-ingress
+
+helm install stable/nginx-ingress `
+    --name nginx-ingress `
+    --namespace api-ingress `
+    --set controller.service.loadBalancerIP=40.113.202.183 `
+    --set controller.scope.enabled=true `
+    --set controller.scope.namespace="api-ingress" `
+    --set controller.replicaCount=3
+
+kubectl get service nginx-ingress-controller -n api-ingress -w
+```
+
+In final preperation, we will set up TLS termination via LetsEncrypt
+```
+helm install stable/cert-manager `
+    --name cert-manager `
+    --namespace kube-system `
+    --set ingressShim.extraArgs='{--default-issuer-name=letsencrypt-prod,--default-issuer-kind=Issuer}'
+
+kubectl apply -f .\setup\cert-issuer-prod.yaml -n api-ingress
+```
 
 Now, create some resources and an `Ingress` definition:
 ```
-kubectl create namespace api-ingress
 kubectl apply -f .\example-ingress\kubernetes\ -n api-ingress
 ```
 
 Access the two services, balanced between their deployed pods, with these URIs:
 
-- [https://rp-aks-centralus.centralus.cloudapp.azure.com/api-a](https://rp-aks-centralus.centralus.cloudapp.azure.com/api-a)
-- [https://rp-aks-centralus.centralus.cloudapp.azure.com/api-b](https://rp-aks-centralus.centralus.cloudapp.azure.com/api-b)
+- [http://rp-aks-centralus-api-ingress.centralus.cloudapp.azure.com/api-a](http://rp-aks-centralus-api-ingress.centralus.cloudapp.azure.com/api-a)
+- [http://rp-aks-centralus-api-ingress.centralus.cloudapp.azure.com/api-b](http://rp-aks-centralus-api-ingress.centralus.cloudapp.azure.com/api-b)
 
 ## Advanced concepts
 
