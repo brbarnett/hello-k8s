@@ -109,7 +109,7 @@ kubectl create namespace api-ingress
 helm install stable/nginx-ingress `
     --name nginx-ingress `
     --namespace api-ingress `
-    --set controller.service.loadBalancerIP=40.113.202.183 `
+    --set controller.service.loadBalancerIP=ip.address.created.above `
     --set controller.scope.enabled=true `
     --set controller.scope.namespace="api-ingress" `
     --set controller.replicaCount=3
