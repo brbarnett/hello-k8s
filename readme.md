@@ -38,7 +38,7 @@ az aks create `
     --aad-client-app-id 00000000-0000-0000-0000-000000000000 `
     --aad-tenant-id 00000000-0000-0000-0000-000000000000 `
     --enable-rbac `
-    --kubernetes-version 1.11.1 `
+    --kubernetes-version 1.11.2 `
     --no-wait
 ```
 _Note: backticks (`) are for legibility and I'm assuming you're using PowerShell. Use backslashes instead on Linux._
