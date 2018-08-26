@@ -173,7 +173,9 @@ Start by cloning the Istio project
 ```
 git clone https://github.com/istio/istio
 cd istio
+git checkout release-1.0
 ```
+_Note: I had some issues installing on AKS from `master`, but the issue has been resolved in the `release-1.0` branch._
 
 Istio comes with a good number of `CustomRoleDefinition` resources, or CRDs. Before installing Istio via Helm, load these CRDs manually (future version of Helm will allow CRD + Chart installations)
 ```
@@ -190,9 +192,11 @@ helm install install/kubernetes/helm/istio `
     --set grafana.enabled=true `
     --set grafana.persist=true `
     --set servicegraph.enabled=true `
-    --set tracing.enabled=true `
-    --timeout 600
+    --set tracing.enabled=true
+```
+_Note: see all possible custom values here: [https://github.com/istio/istio/tree/master/install/kubernetes/helm/istio#configuration](https://github.com/istio/istio/tree/master/install/kubernetes/helm/istio#configuration). It is common for the watch to timeout prior to Helm install completing._
 
+Check status of Istio installation
+```
 kubectl get pods -n istio-system
 ```
-_Note: see all possible custom values here: [https://github.com/istio/istio/tree/master/install/kubernetes/helm/istio#configuration](https://github.com/istio/istio/tree/master/install/kubernetes/helm/istio#configuration)
