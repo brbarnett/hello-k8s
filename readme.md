@@ -40,11 +40,11 @@ az aks create `
     -s Standard_DS1_v2 `
     -p rp-aks-eastus `
     -a monitoring `
-    --workspace-resource-id /subscriptions/7be00436-d440-4bad-a568-e4366966067f/resourceGroups/Kubernetes/providers/Microsoft.OperationalInsights/workspaces/rp-aks `
-    --aad-server-app-id b7dc7717-452b-4b43-ae0f-364761bab7c0 `
-    --aad-server-app-secret 0DobgT9QGFuYROC+rZ/n2FRZLBYr947WTA0IhQ6ynJQ= `
-    --aad-client-app-id 0eb0d6ac-8282-43c1-8c7f-af1519d384a7 `
-    --aad-tenant-id 5fbbce2a-c3e6-4b5e-a51f-222674fdb44d `
+    --workspace-resource-id /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/Kubernetes/providers/Microsoft.OperationalInsights/workspaces/rp-aks `
+    --aad-server-app-id 00000000-0000-0000-0000-000000000000 `
+    --aad-server-app-secret xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx= `
+    --aad-client-app-id 00000000-0000-0000-0000-000000000000 `
+    --aad-tenant-id 00000000-0000-0000-0000-000000000000 `
     --kubernetes-version 1.11.2 `
     --no-wait
 ```
