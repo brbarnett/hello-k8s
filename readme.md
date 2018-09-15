@@ -13,31 +13,38 @@ az account set --subscription 00000000-0000-0000-0000-000000000000
 
 ### Create primary resource group
 ```
-az group create -l centralus -n Kubernetes
+az group create -l eastus -n Kubernetes
 ```
+
+### Create Log Analytics workspace
+Create a new Log Analytics workspace in the new Kubernetes RG. This setup was tested using the following settings:
+
+![Log Analytics settings](images/log-analytics.jpg "Log Analytics settings")
 
 ### Find latest version
 Latest is on the bottom of the list. When creating the cluster, use the same location and its corresponding latest version value.
 ```
-az aks get-versions -l centralus
+az aks get-versions -l eastus
 ```
 
 ### Create AKS cluster
-The cluster resource itself will be in the named resource group, but it will also automatically create a managed cluster resource group that will contain all of the resources to support the node VMs. The name is auto-created in the format of MC_[Resource Group]\_[AKS Cluster Name]\_[Location], so in this example it will be MC_Kubernetes_rp-aks-centralus_centralus
+The cluster resource itself will be in the named resource group, but it will also automatically create a managed cluster resource group that will contain all of the resources to support the node VMs. The name is auto-created in the format of MC_[Resource Group]\_[AKS Cluster Name]\_[Location], so in this example it will be MC_Kubernetes_rp-aks-eastus_eastus
 
 AAD integration is optional, but it does make it significantly easier to provision access to other users in your organization. If you don't want to use it here, drop the `--aad-*` flags from the create command. Otherwise, follow this guide for instructions on AAD integration: [https://docs.microsoft.com/en-us/azure/aks/aad-integration](https://docs.microsoft.com/en-us/azure/aks/aad-integration)
 ```
 az aks create `
     -g Kubernetes `
-    -n rp-aks-centralus `
-    -l centralus `
+    -n rp-aks-eastus `
+    -l eastus `
     -c 3 `
     -s Standard_DS1_v2 `
-    --aad-server-app-id 00000000-0000-0000-0000-000000000000 `
-    --aad-server-app-secret xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx= `
-    --aad-client-app-id 00000000-0000-0000-0000-000000000000 `
-    --aad-tenant-id 00000000-0000-0000-0000-000000000000 `
-    --enable-rbac `
+    -p rp-aks-eastus `
+    -a monitoring `
+    --workspace-resource-id /subscriptions/7be00436-d440-4bad-a568-e4366966067f/resourceGroups/Kubernetes/providers/Microsoft.OperationalInsights/workspaces/rp-aks `
+    --aad-server-app-id b7dc7717-452b-4b43-ae0f-364761bab7c0 `
+    --aad-server-app-secret 0DobgT9QGFuYROC+rZ/n2FRZLBYr947WTA0IhQ6ynJQ= `
+    --aad-client-app-id 0eb0d6ac-8282-43c1-8c7f-af1519d384a7 `
+    --aad-tenant-id 5fbbce2a-c3e6-4b5e-a51f-222674fdb44d `
     --kubernetes-version 1.11.2 `
     --no-wait
 ```
